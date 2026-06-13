@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*",  "destination": "https://vibesync-production-f7a9.up.railway.app/api/:path*" },
+    { "source": "/auth/:path*", "destination": "https://vibesync-production-f7a9.up.railway.app/auth/:path*" },
+    { "source": "/callback",    "destination": "https://vibesync-production-f7a9.up.railway.app/callback" },
+    { "source": "/(.*)",        "destination": "/index.html" }
+  ]
+}
