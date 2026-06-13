@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*",  "destination": "RAILWAY_URL/api/:path*" },
+    { "source": "/auth/:path*", "destination": "RAILWAY_URL/auth/:path*" },
+    { "source": "/callback",    "destination": "RAILWAY_URL/callback" },
+    { "source": "/(.*)",        "destination": "/index.html" }
+  ]
+}
