@@ -15,6 +15,7 @@ import CollectionModal from './components/CollectionModal';
 import CompatWaiting   from './components/CompatWaiting';
 import CompatResult    from './components/CompatResult';
 import CompatCard      from './components/CompatCard';
+import GenreCard       from './components/GenreCard';
 
 import useNowPlaying   from './hooks/useNowPlaying';
 import { useCollection } from './hooks/useCollection';
@@ -22,7 +23,7 @@ import { computeCompatScore, getCompatLabel, VIBE_COORDS } from './compat/score'
 
 const CSS_ANIMATIONS = {
   float: 'float', bounce: 'bounce', sway: 'sway',
-  bob: 'bob', 'bounce-hyper': 'bounce-hyper', pulse: 'pulse',
+  bob: 'bob', 'bounce-hyper': 'bounce-hyper', pulse: 'pulse', jitter: 'jitter',
 };
 
 function encodeVibe(themeId, track) {
@@ -368,7 +369,10 @@ export default function App() {
         </div>
 
         {isPlaying ? (
-          <ThemeLabel themeId={themeId} visible={visible} />
+          <>
+            <ThemeLabel themeId={themeId} visible={visible} />
+            <GenreCard character={character} visible={visible} />
+          </>
         ) : (
           <div className="nothing-playing">{authed ? 'Nothing playing...' : ''}</div>
         )}

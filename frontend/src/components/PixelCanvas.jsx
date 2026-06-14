@@ -11,6 +11,7 @@ export default function PixelCanvas({ character, visible, cssAnimation }) {
     const canvas = canvasRef.current;
     if (!canvas || !character?.draw) return;
     const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
     ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     character.draw(ctx, idx, CANVAS_SIZE);
   }
