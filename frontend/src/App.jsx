@@ -115,7 +115,7 @@ export default function App() {
     setTrack(pollData.track);
     if (pollData.track.id === lastTrackId.current) return;
     lastTrackId.current = pollData.track.id;
-    const newTheme = matchTheme(pollData.audioFeatures, pollData.genres);
+    const newTheme = matchTheme(pollData.audioFeatures, pollData.genres, pollData.track);
     unlock(newTheme);
     if (newTheme === themeId) return;
     setVisible(false);

@@ -66,14 +66,42 @@ function audioScore(f, id) {
   }
 }
 
-export function matchTheme(audioFeatures, genres) {
+function nameScore(track, keywords) {
+  if (!track) return 0;
+  const hay = `${track.title ?? ''} ${track.artist ?? ''} ${track.albumName ?? ''}`.toLowerCase();
+  let hits = 0;
+  for (const kw of keywords) {
+    if (hay.includes(kw.toLowerCase())) hits++;
+  }
+  return clamp(hits / Math.min(keywords.length, 3));
+}
+
+export function matchTheme(audioFeatures, genres, track) {
   let best = 'lofi_chill', bestScore = -1;
+  const hasAudio = audioFeatures != null;
 
   for (const id of THEME_IDS) {
-    const gs = genreScore(genres, THEMES[id].keywords);
-    const as = audioScore(audioFeatures, id);
-    const total = gs * 0.55 + as * 0.45;
+    const keywords = THEMES[id].keywords;
+    const gs = genreScore(genres, keywords);
+    const ns = nameScore(track, keywords);
+    const as = hasAudio ? audioScore(audioFeatures, id) : 0;
+
+    // When audio features are available: genre+name 55%, audio 45%
+    // When not available: genre 65%, name 35% (pure text matching)
+    const textScore = Math.max(gs, ns * 0.8);
+    const total = hasAudio
+      ? textScore * 0.55 + as * 0.45
+      : textScore;
+
     if (total > bestScore) { bestScore = total; best = id; }
   }
+
+  // If nothing matched at all, pick based on a hash of the track id so
+  // different songs at least get different cats instead of always lofi.
+  if (bestScore === 0 && track?.id) {
+    const hash = [...track.id].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+    best = THEME_IDS[hash % THEME_IDS.length];
+  }
+
   return best;
 }
